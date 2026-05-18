@@ -1,0 +1,96 @@
+@model CourseStatsViewModel
+
+@{
+    ViewData["Title"] = "Course Statistics";
+    Layout = "_Layout";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Course Statistics</h2>
+        <p class="page-description">
+            Trang này giúp bạn xem nhanh tổng quan tình hình đăng ký và khóa học.
+        </p>
+    </div>
+
+    <a class="btn btn-light" href="/Courses">
+        Quay lại danh sách
+    </a>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalCourses</div>
+        <div class="stat-label">Tổng số khóa học</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalAvailableSeats</div>
+        <div class="stat-label">Tổng số chỗ còn lại</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalExpectedRevenueText</div>
+        <div class="stat-label">Tổng học phí kỳ vọng</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-number text-danger">@Model.FullCourseCount</div>
+        <div class="stat-label">Khóa học đã đầy</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-number text-warning">@Model.AlmostFullCount</div>
+        <div class="stat-label">Khóa học gần đầy</div>
+    </div>
+</div>
+
+<div class="info-panel">
+    <h4>Đánh giá tình hình khóa học</h4>
+
+    @if (Model.FullCourseCount > 0)
+    {
+        <p class="text-danger">
+            Có khóa học đã đầy. Hãy thông báo cho sinh viên về những lớp còn chỗ.
+        </p>
+    }
+    else if (Model.AlmostFullCount > 0)
+    {
+        <p class="text-warning">
+            Một số khóa học sắp đầy. Nên khuyến khích đăng ký sớm.
+        </p>
+    }
+    else
+    {
+        <p class="text-success">
+            Tình trạng đăng ký hiện tại ổn định.
+        </p>
+    }
+</div>
+
+<table class="table table-bordered mt-4">
+    <tr>
+        <th>Tổng số khóa học</th>
+        <td>@Model.TotalCourses</td>
+    </tr>
+
+    <tr>
+        <th>Tổng số chỗ còn lại</th>
+        <td>@Model.TotalAvailableSeats</td>
+    </tr>
+
+    <tr>
+        <th>Tổng học phí kỳ vọng</th>
+        <td>@Model.TotalExpectedRevenueText</td>
+    </tr>
+
+    <tr>
+        <th>Số khóa học đã đầy</th>
+        <td>@Model.FullCourseCount</td>
+    </tr>
+
+    <tr>
+        <th>Số khóa học gần đầy</th>
+        <td>@Model.AlmostFullCount</td>
+    </tr>
+</table>

@@ -1,0 +1,100 @@
+@model CourseDetailViewModel
+
+@{
+    ViewData["Title"] = "Course Detail";
+    Layout = "_Layout";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Course Detail</h2>
+        <p class="page-description">
+            Thông tin chi tiết của khóa học.
+        </p>
+    </div>
+
+    <a class="btn btn-light" href="/Courses">
+        Quay lại danh sách
+    </a>
+</div>
+
+<div class="detail-layout">
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <td>@Model.Id</td>
+            </tr>
+
+            <tr>
+                <th>Mã khóa học</th>
+                <td>@Model.CourseCode</td>
+            </tr>
+
+            <tr>
+                <th>Tên khóa học</th>
+                <td>@Model.Title</td>
+            </tr>
+
+            <tr>
+                <th>Khoa</th>
+                <td>@Model.Department</td>
+            </tr>
+
+            <tr>
+                <th>Giảng viên</th>
+                <td>@Model.Instructor</td>
+            </tr>
+
+            <tr>
+                <th>Học phí</th>
+                <td>@Model.FeeText</td>
+            </tr>
+
+            <tr>
+                <th>Số chỗ còn lại</th>
+                <td>@Model.AvailableSeats</td>
+            </tr>
+
+            <tr>
+                <th>Ngưỡng cảnh báo</th>
+                <td>@Model.WarningThreshold</td>
+            </tr>
+
+            <tr>
+                <th>Trạng thái</th>
+                <td>@Model.EnrollmentStatus</td>
+            </tr>
+
+            <tr>
+                <th>Gợi ý đăng ký</th>
+                <td>@Model.AdvisorySuggestion</td>
+            </tr>
+
+            <tr>
+                <th>Cập nhật lần cuối</th>
+                <td>@Model.LastUpdatedText</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <div class="side-card warning">
+            <h4>Trạng thái đăng ký</h4>
+            <h3>@Model.EnrollmentStatus</h3>
+            <p>@Model.AdvisorySuggestion</p>
+        </div>
+
+        <div class="side-card info">
+            <h4>Học phí khóa học</h4>
+            <h3>@Model.FeeText</h3>
+            <p>Thông tin học phí được tính theo đơn vị VND.</p>
+        </div>
+
+        <div class="side-card success">
+            <h4>Cập nhật lần cuối</h4>
+            <h3>@Model.LastUpdatedText</h3>
+            <p>Thông tin khóa học được cập nhật gần nhất.</p>
+        </div>
+    </div>
+</div>
