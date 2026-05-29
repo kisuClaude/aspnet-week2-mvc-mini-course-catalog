@@ -35,31 +35,26 @@ public class CoursesController : Controller
         return View(_courseService.GetStats());
     }
 
-    // Yêu cầu: 1 Action trả về text
     public IActionResult Welcome()
     {
         return Content("Chào mừng bạn đến với hệ thống quản lý khóa học MVC.");
     }
 
-    // Yêu cầu: 1 Action trả về JSON
     public IActionResult CourseJson()
     {
         return Json(_courseService.GetAll());
     }
 
-    // Yêu cầu: 1 Action chuyển hướng
     public IActionResult GoToList()
     {
         return RedirectToAction(nameof(Index));
     }
 
-    // Yêu cầu: 1 Action xử lý NotFound demo
     public IActionResult Force404()
     {
         return NotFound("Đây là response 404 từ action Force404.");
     }
 
-    // Helpers map Model -> ViewModel
     private static CourseListItemViewModel ToListItemViewModel(Course course)
     {
         return new CourseListItemViewModel
@@ -79,5 +74,45 @@ public class CoursesController : Controller
             TuitionFee = course.TuitionFee, AvailableSeats = course.AvailableSeats,
             WarningThreshold = course.WarningThreshold, LastUpdatedAt = course.LastUpdatedAt
         };
+    }
+
+    [HttpGet]
+    public IActionResult Search(string? keyword, decimal? minFee)
+    {
+        var courses = _courseService.Search(keyword, minFee)
+            .Select(ToListItemViewModel).ToList();
+
+        var viewModel = new CourseSearchViewModel
+        {
+            Keyword = keyword ?? "",
+            MinFee = minFee,
+            Courses = courses
+        };
+        return View(viewModel);
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        var viewModel = new CourseCreateViewModel 
+        { 
+            AvailableSeats = 30, 
+            WarningThreshold = 5
+        };
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(CourseCreateViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        _courseService.Create(model);
+        TempData["SuccessMessage"] = $"Đã thêm thành công khóa học: {model.Title}";
+        return RedirectToAction(nameof(Index)); 
     }
 }

@@ -1,0 +1,24 @@
+@model MiniCourseCatalog.Mvc.ViewModels.CourseListItemViewModel
+
+<div class="product-card">
+    <h3>@Model.Title</h3>
+    <p class="product-meta">Mã KH: @Model.CourseCode</p>
+    <p class="product-meta">Khoa: @Model.Department</p>
+    
+    <p class="product-price">@Model.FeeText</p>
+    
+    <p>Chỗ trống: <strong>@Model.AvailableSeats</strong></p>
+    
+    <div>
+        <span class="@Model.EnrollmentStatusClass">@Model.EnrollmentStatus</span>
+    </div>
+    
+    <div class="card-actions">
+        <a class="btn btn-light" 
+           asp-controller="Courses" 
+           asp-action="Detail" 
+           asp-route-id="@Model.Id">
+           Xem chi tiết
+        </a>
+    </div>
+</div>

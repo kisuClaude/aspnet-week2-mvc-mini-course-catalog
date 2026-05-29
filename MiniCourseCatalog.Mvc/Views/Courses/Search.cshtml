@@ -1,0 +1,41 @@
+@model MiniCourseCatalog.Mvc.ViewModels.CourseSearchViewModel
+@{ ViewData["Title"] = "Tìm kiếm khóa học"; }
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Tìm kiếm khóa học</h2>
+        <p class="page-description">Form GET dùng Query String để tìm kiếm.</p>
+    </div>
+</div>
+
+<div class="form-layout">
+    <form class="form-box" asp-controller="Courses" asp-action="Search" method="get">
+        <div class="form-group">
+            <label asp-for="Keyword">Từ khóa (Tên, Mã KH, Khoa)</label>
+            <input asp-for="Keyword" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="MinFee">Học phí tối thiểu</label>
+            <input asp-for="MinFee" class="form-control" />
+        </div>
+        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+        <a class="btn btn-secondary" asp-controller="Courses" asp-action="Search">Reset</a>
+    </form>
+
+    <div>
+        <h3>Kết quả: @Model.Courses.Count khóa học</h3>
+        @if (Model.Courses.Count == 0)
+        {
+            <div class="validation-summary-errors">Không tìm thấy khóa học phù hợp.</div>
+        }
+        else
+        {
+            <div class="product-grid">
+                @foreach (var item in Model.Courses)
+                {
+                    <partial name="_CourseCard" model="item" />
+                }
+            </div>
+        }
+    </div>
+</div>

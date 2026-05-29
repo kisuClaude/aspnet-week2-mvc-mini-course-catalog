@@ -26,3 +26,4 @@ C:\MiniCourse\MiniCourseCatalog.Mvc\bin\Debug\net8.0\MiniCourseCatalog.Mvc.runti
 C:\MiniCourse\MiniCourseCatalog.Mvc\bin\Debug\net8.0\MiniCourseCatalog.Mvc.pdb
 C:\MiniCourse\MiniCourseCatalog.Mvc\obj\Debug\net8.0\MiniCourseCatalog.Mvc.genruntimeconfig.cache
 C:\MiniCourse\MiniCourseCatalog.Mvc\obj\Debug\net8.0\ref\MiniCourseCatalog.Mvc.dll
+C:\MiniCourse\MiniCourseCatalog.Mvc\obj\Debug\net8.0\MiniCourseCatalog.Mvc.sourcelink.json

@@ -28,4 +28,43 @@ public class CourseService
             AlmostFullCount = _courses.Count(c => c.AvailableSeats > 0 && c.AvailableSeats <= c.WarningThreshold)
         };
     }
+
+    public List<Course> Search(string? keyword, decimal? minFee)
+    {
+        var query = _courses.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            query = query.Where(c => 
+                c.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                c.CourseCode.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+                c.Department.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (minFee.HasValue)
+        {
+            query = query.Where(c => c.TuitionFee >= minFee.Value);
+        }
+
+        return query.ToList();
+    }
+
+    public Course Create(CourseCreateViewModel model)
+    {
+        var newId = _courses.Count == 0 ? 1 : _courses.Max(c => c.Id) + 1;
+        var course = new Course
+        {
+            Id = newId,
+            CourseCode = $"NEW-{newId:D3}", 
+            Title = model.Title,
+            Department = model.Department,
+            Instructor = model.Instructor,
+            TuitionFee = model.TuitionFee,
+            AvailableSeats = model.AvailableSeats,
+            WarningThreshold = model.WarningThreshold,
+            LastUpdatedAt = DateTime.Now
+        };
+        _courses.Add(course);
+        return course;
+    }
 }
