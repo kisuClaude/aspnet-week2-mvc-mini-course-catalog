@@ -79,17 +79,56 @@ public class AppDbContext : DbContext
 
         // Seed Data
         modelBuilder.Entity<CourseCategory>().HasData(
-            new CourseCategory { Id = 1, Name = "Công nghệ thông tin", Code = "IT" },
-            new CourseCategory { Id = 2, Name = "Ngoại ngữ", Code = "LANG" },
-            new CourseCategory { Id = 3, Name = "Kỹ năng mềm", Code = "SOFT" }
+            new CourseCategory { Id = 1, Name = "Anh văn", Code = "AV" },
+            new CourseCategory { Id = 2, Name = "Lý luận chính trị", Code = "LLCT" },
+            new CourseCategory { Id = 3, Name = "Khoa học tự nhiên & Đại cương", Code = "KHTN" },
+            new CourseCategory { Id = 4, Name = "Thể dục", Code = "TD" },
+            new CourseCategory { Id = 5, Name = "Sinh học & Hóa học", Code = "SHHH" },
+            new CourseCategory { Id = 6, Name = "Toán học & Tin học", Code = "THTH" },
+            new CourseCategory { Id = 7, Name = "Vật lý", Code = "VL" }
         );
 
         modelBuilder.Entity<Course>().HasData(
-            new Course { Id = 1, CourseCode = "MTH00001", CourseSku = "SKU-IT-CSLT", Title = "Cơ sở lập trình", Department = "Toán-Tin", Instructor = "Nguyễn Hiền Lương", TuitionFee = 1500000, AvailableSeats = 50, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
-            new Course { Id = 2, CourseCode = "MTH00002", CourseSku = "SKU-IT-CTDL", Title = "Cấu trúc dữ liệu và giải thuật", Department = "Toán-Tin", Instructor = "Hà Văn Thảo", TuitionFee = 1800000, AvailableSeats = 5, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
-            new Course { Id = 3, CourseCode = "MTH00003", CourseSku = "SKU-IT-OOP", Title = "Lập trình hướng đối tượng", Department = "Toán-Tin", Instructor = "Hà Văn Thảo", TuitionFee = 2000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
-            new Course { Id = 4, CourseCode = "MTH00004", CourseSku = "SKU-IT-WEB", Title = "Lập trình web", Department = "Toán-Tin", Instructor = "Hà Văn Thảo", TuitionFee = 1600000, AvailableSeats = 20, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
-            new Course { Id = 5, CourseCode = "ENG00001", CourseSku = "SKU-LANG-IELTS", Title = "IELTS 6.5 Cấp tốc", Department = "Ngoại ngữ", Instructor = "John Doe", TuitionFee = 4500000, AvailableSeats = 15, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 }
+            // Anh văn (Category 1)
+            new Course { Id = 1, CourseCode = "ADD00031", CourseSku = "SKU-25C2_1", Title = "Anh văn 1 (Lớp 25C2_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 20, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 2, CourseCode = "ADD00031", CourseSku = "SKU-25C3_1", Title = "Anh văn 1 (Lớp 25C3_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 9, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 3, CourseCode = "ADD00031", CourseSku = "SKU-25C4_1", Title = "Anh văn 1 (Lớp 25C4_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 8, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 4, CourseCode = "ADD00031", CourseSku = "SKU-25S4_1", Title = "Anh văn 1 (Lớp 25S4_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 6, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 5, CourseCode = "ADD00032", CourseSku = "SKU-AV2-25S4_1", Title = "Anh văn 2 (Lớp 25S4_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 16, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 6, CourseCode = "ADD00032", CourseSku = "SKU-AV2-25S5_1", Title = "Anh văn 2 (Lớp 25S5_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 2, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 7, CourseCode = "ADD00032", CourseSku = "SKU-AV2-25S6_1", Title = "Anh văn 2 (Lớp 25S6_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 23, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+            new Course { Id = 8, CourseCode = "ADD00033", CourseSku = "SKU-AV3-25C2_1", Title = "Anh văn 3 (Lớp 25C2_1)", Department = "Anh văn", Instructor = "Giảng viên Anh văn", TuitionFee = 1500000, AvailableSeats = 10, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 1 },
+
+            // Lý luận chính trị (Category 2)
+            new Course { Id = 9, CourseCode = "BAA00003", CourseSku = "SKU-HCM-24_7", Title = "Tư tưởng Hồ Chí Minh (Lớp 24_7)", Department = "Lý luận chính trị", Instructor = "Giảng viên LLCT", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 },
+            new Course { Id = 10, CourseCode = "BAA00003", CourseSku = "SKU-HCM-24_5", Title = "Tư tưởng Hồ Chí Minh (Lớp 24_5)", Department = "Lý luận chính trị", Instructor = "Giảng viên LLCT", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 },
+            new Course { Id = 11, CourseCode = "BAA00004", CourseSku = "SKU-PLDC-25CTT6", Title = "Pháp luật đại cương (Lớp 25CTT6)", Department = "Lý luận chính trị", Instructor = "Giảng viên LLCT", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 },
+            new Course { Id = 12, CourseCode = "BAA00004", CourseSku = "SKU-PLDC-25CTT4", Title = "Pháp luật đại cương (Lớp 25CTT4)", Department = "Lý luận chính trị", Instructor = "Giảng viên LLCT", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 },
+            new Course { Id = 13, CourseCode = "BAA00101", CourseSku = "SKU-MLN-25KVL2", Title = "Triết học Mác - Lênin (Lớp 25KVL2)", Department = "Lý luận chính trị", Instructor = "Giảng viên LLCT", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 },
+            new Course { Id = 14, CourseCode = "BAA00104", CourseSku = "SKU-LSD-25DTV2", Title = "Lịch sử Đảng Cộng sản Việt Nam (Lớp 25DTV2)", Department = "Lý luận chính trị", Instructor = "Giảng viên LLCT", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 2 },
+
+            // Khoa học tự nhiên & Đại cương (Category 3)
+            new Course { Id = 15, CourseCode = "BAA00005", CourseSku = "SKU-KTDC-25KDC1", Title = "Kinh tế đại cương (Lớp 25KDC1)", Department = "Kinh tế", Instructor = "Giảng viên Kinh tế", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 3 },
+            new Course { Id = 16, CourseCode = "BAA00006", CourseSku = "SKU-TLDC-25_1", Title = "Tâm lý đại cương (Lớp 25_1)", Department = "Tâm lý", Instructor = "Giảng viên Tâm lý", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 3 },
+            new Course { Id = 17, CourseCode = "BAA00008", CourseSku = "SKU-KN-25KDL", Title = "Kỹ năng làm việc nhóm và học tập", Department = "Kỹ năng", Instructor = "Giảng viên Kỹ năng", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 3 },
+
+            // Thể dục (Category 4)
+            new Course { Id = 18, CourseCode = "BAA00021", CourseSku = "SKU-TD1-25TNT2", Title = "Thể dục 1 (Lớp 25TNT2)", Department = "Thể chất", Instructor = "Giảng viên Thể dục", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 4 },
+            new Course { Id = 19, CourseCode = "BAA00022", CourseSku = "SKU-TD2-25VT_T2Ti1", Title = "Thể dục 2 (Lớp 25VT_T2Ti1)", Department = "Thể chất", Instructor = "Giảng viên Thể dục", TuitionFee = 1000000, AvailableSeats = 3, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 4 },
+            new Course { Id = 20, CourseCode = "BAA00022", CourseSku = "SKU-TD2-25VT_T3Ti1", Title = "Thể dục 2 (Lớp 25VT_T3Ti1)", Department = "Thể chất", Instructor = "Giảng viên Thể dục", TuitionFee = 1000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 4 },
+
+            // Sinh học & Hóa học (Category 5)
+            new Course { Id = 21, CourseCode = "BIO00001", CourseSku = "SKU-SDC1-25HDH1", Title = "Sinh đại cương 1 (Lớp 25HDH1)", Department = "Sinh học", Instructor = "Giảng viên Sinh học", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 5 },
+            new Course { Id = 22, CourseCode = "BIO00002", CourseSku = "SKU-SDC2-25CSH3", Title = "Sinh đại cương 2 (Lớp 25CSH3)", Department = "Sinh học", Instructor = "Giảng viên Sinh học", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 5 },
+            new Course { Id = 23, CourseCode = "CHE00001", CourseSku = "SKU-HDC1-25CVD1", Title = "Hóa đại cương 1 (Lớp 25CVD1)", Department = "Hóa học", Instructor = "Giảng viên Hóa học", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 5 },
+
+            // Toán học & Tin học (Category 6)
+            new Course { Id = 24, CourseCode = "CSC00003", CourseSku = "SKU-THCS-C2A", Title = "Tin học cơ sở (Lớp C2A)", Department = "Toán-Tin", Instructor = "Giảng viên Tin học", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 6 },
+            new Course { Id = 25, CourseCode = "MTH00013", CourseSku = "SKU-VTP2A-25KDL1", Title = "Vi tích phân 2A (Lớp 25KDL1)", Department = "Toán-Tin", Instructor = "Giảng viên Toán", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 6 },
+            new Course { Id = 26, CourseCode = "MTH00055", CourseSku = "SKU-CSLT-25TTH1", Title = "Cơ sở lập trình (Lớp 25TTH1)", Department = "Toán-Tin", Instructor = "Giảng viên Tin học", TuitionFee = 2000000, AvailableSeats = 0, WarningThreshold = 10, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 6 },
+
+            // Vật lý (Category 7)
+            new Course { Id = 27, CourseCode = "PHY00001", CourseSku = "SKU-VLDC1-25CTT5", Title = "Vật lý đại cương 1 (Lớp 25CTT5)", Department = "Vật lý", Instructor = "Giảng viên Vật lý", TuitionFee = 1500000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Parse("2026-06-10"), CategoryId = 7 }
         );
 
         modelBuilder.Entity<Student>().HasData(
