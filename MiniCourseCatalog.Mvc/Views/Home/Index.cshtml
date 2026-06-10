@@ -1,40 +1,40 @@
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Trang chủ";
     Layout = "_Layout";
 }
 
 <div class="lab-hero">
-    <h1>ASP.NET Core MVC Lab02</h1>
+    <h1>Hệ thống Quản lý Khóa học trực tuyến</h1>
 
     <p>
-        Bài Lab này hướng dẫn xây dựng một website MVC cơ bản
+        Hệ thống hỗ trợ tra cứu, đăng ký học tập trực tuyến
         <br />
-        để hiển thị danh mục khóa học và tình trạng đăng ký.
+        và quản lý dữ liệu an toàn qua EF Core & SQLite.
     </p>
 </div>
     </p>
 </div>
 
 <div class="info-panel">
-    <h4>Mục tiêu chính của Lab02</h4>
+    <h4>Mục tiêu nâng cấp Lab04</h4>
     <p>
-        Hiểu và sử dụng Controller, ViewModel và Razor Syntax
-        để hiển thị dữ liệu trong ASP.NET Core MVC.
+        Ứng dụng cấu trúc Dependency Injection, Repository/Service Pattern, 
+        Options Pattern cùng quản lý giao dịch an toàn (Transaction).
     </p>
 </div>
 
-<h3>Luồng xử lý chính trong MVC</h3>
+<h3>Luồng xử lý chính của hệ thống nâng cấp</h3>
 
 <ol class="flow-list">
-    <li>1. User gửi request đến URL.</li>
-    <li>2. Controller Action nhận request.</li>
-    <li>3. Controller gọi Service để lấy dữ liệu.</li>
-    <li>4. Controller chuyển dữ liệu sang ViewModel.</li>
-    <li>5. View dùng Razor để render HTML và trả về cho trình duyệt.</li>
+    <li>1. Trình duyệt gửi yêu cầu đăng ký/tìm kiếm học tập.</li>
+    <li>2. Controller đón nhận đầu vào và chuyển cho Service tương ứng.</li>
+    <li>3. Service kiểm tra nghiệp vụ và ra lệnh qua Repository.</li>
+    <li>4. Repository thực thi truy vấn tối ưu (AsNoTracking/Tracking) tới DbContext.</li>
+    <li>5. Trả về kết quả hiển thị trực quan thông tin sĩ số và danh mục.</li>
 </ol>
 
 <div class="text-center mt-4">
     <a class="btn btn-primary btn-lg" href="/Courses">
-        Đi đến Course Catalog
+        Đi đến Danh sách Khóa học
     </a>
 </div>

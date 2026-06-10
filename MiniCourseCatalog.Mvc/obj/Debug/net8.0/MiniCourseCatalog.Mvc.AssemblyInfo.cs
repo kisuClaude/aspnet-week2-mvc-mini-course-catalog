@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiniCourseCatalog.Mvc")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20cea006eb330ddb6b4c0ac7c9482800c6a8be1c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35ca906d9f97d88fccc2ce020a050cae79eb195a")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiniCourseCatalog.Mvc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiniCourseCatalog.Mvc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
