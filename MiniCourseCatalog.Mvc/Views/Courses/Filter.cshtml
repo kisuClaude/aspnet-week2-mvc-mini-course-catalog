@@ -1,0 +1,85 @@
+@model MiniCourseCatalog.Mvc.ViewModels.CourseSearchViewModel
+@{
+    ViewData["Title"] = "Lọc khóa học";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Bộ lọc Khóa học nâng cao</h2>
+        <p class="page-description">Tìm kiếm và lọc theo danh mục & khoảng học phí. Kết quả được truy vấn bằng <strong>AsNoTracking()</strong>.</p>
+    </div>
+</div>
+
+<div class="filter-card" style="background: #f7fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 30px;">
+    <form method="get" asp-controller="Courses" asp-action="Filter" class="form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) gap(15px); align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="display: block; font-weight: bold; margin-bottom: 6px;">Danh mục khóa học</label>
+            <select name="categoryId" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #cbd5e0;">
+                <option value="">-- Tất cả danh mục --</option>
+                @foreach (var cat in Model.Categories)
+                {
+                    if (Model.CategoryId == cat.Id)
+                    {
+                        <option value="@cat.Id" selected="selected">@cat.Name (@cat.CourseCount)</option>
+                    }
+                    else
+                    {
+                        <option value="@cat.Id">@cat.Name (@cat.CourseCount)</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="display: block; font-weight: bold; margin-bottom: 6px;">Học phí tối thiểu (VNĐ)</label>
+            <input type="number" name="minPrice" value="@Model.MinFee" placeholder="Ví dụ: 1000000" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #cbd5e0;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+            <label style="display: block; font-weight: bold; margin-bottom: 6px;">Học phí tối đa (VNĐ)</label>
+            <input type="number" name="maxPrice" value="@Model.MaxFee" placeholder="Ví dụ: 3000000" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #cbd5e0;" />
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-primary" style="flex: 1; padding: 10px;">Lọc kết quả</button>
+            <a asp-controller="Courses" asp-action="Filter" class="btn btn-light" style="padding: 10px; text-decoration: none; text-align: center;">Reset</a>
+        </div>
+    </form>
+</div>
+
+<div class="info-box" style="margin-bottom: 20px;">
+    <strong>Tìm thấy:</strong> @Model.Courses.Count khóa học thỏa mãn điều kiện.
+</div>
+
+@if (Model.Courses.Count == 0)
+{
+    <div style="padding: 30px; text-align: center; color: #718096; background: #fff; border: 1px dashed #cbd5e0; border-radius: 8px;">
+        Không tìm thấy khóa học nào phù hợp với bộ lọc đã chọn.
+    </div>
+}
+else
+{
+    <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+        @foreach (var item in Model.Courses)
+        {
+            <div class="product-card" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8em; text-transform: uppercase; background: #edf2f7; padding: 2px 6px; border-radius: 4px; color: #4a5568; font-weight: bold;">
+                        @item.CategoryName
+                    </span>
+                    <h3 style="margin: 10px 0 5px 0; font-size: 1.2em; color: #2d3748;">@item.Title</h3>
+                    <p style="font-size: 0.9em; color: #718096; margin: 0 0 10px 0;">Mã KH: @item.CourseCode | SKU: @item.CourseSku</p>
+                    <p style="font-size: 0.9em; color: #4a5568; margin-bottom: 5px;">Giảng viên: @item.Department</p>
+                    <p style="font-size: 1.1em; font-weight: bold; color: #e53e3e; margin: 10px 0;">@item.FeeText</p>
+                </div>
+                
+                <div style="border-top: 1px solid #edf2f7; padding-top: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.9em; color: #4a5568;">Chỗ trống: <strong>@item.AvailableSeats</strong></span>
+                    <a asp-controller="Courses" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-light" style="padding: 4px 8px; font-size: 0.85em;">
+                        Chi tiết
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}

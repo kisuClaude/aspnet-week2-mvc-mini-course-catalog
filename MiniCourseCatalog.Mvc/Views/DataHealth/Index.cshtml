@@ -1,0 +1,120 @@
+@model MiniCourseCatalog.Mvc.ViewModels.DataHealthViewModel
+@{
+    ViewData["Title"] = "Kiểm tra Sức khỏe Dữ liệu";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Chẩn đoán Sức khỏe Dữ liệu & Cấu hình</h2>
+        <p class="page-description">Trang kiểm tra hoạt động của EF Core Database, Options Pattern, phân biệt Tracking / AsNoTracking và Transaction.</p>
+    </div>
+</div>
+
+@if (TempData["TransactionTestMessage"] != null)
+{
+    <div style="background-color: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-weight: bold;">
+        @TempData["TransactionTestMessage"]
+    </div>
+}
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+    <!-- Options Pattern Settings Panel -->
+    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; color: #2d3748; border-bottom: 2px solid #edf2f7; padding-bottom: 10px;">1. Options Pattern Strongly-typed</h3>
+        <p style="font-size: 0.9em; color: #718096; margin-bottom: 20px;">Đọc từ file <code>appsettings.json</code> qua cơ chế <code>IOptions&lt;AppSettings&gt;</code>.</p>
+        
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 10px 0; font-weight: bold; color: #4a5568;">Tên ứng dụng:</td>
+                <td style="padding: 10px 0; color: #2b6cb0; font-weight: 600;">@Model.AppName</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 10px 0; font-weight: bold; color: #4a5568;">Email hỗ trợ:</td>
+                <td style="padding: 10px 0;">@Model.SupportEmail</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 10px 0; font-weight: bold; color: #4a5568;">Ngưỡng cảnh báo chỗ trống thấp:</td>
+                <td style="padding: 10px 0; font-weight: bold; color: #dd6b20;">@Model.ConfiguredLowSeatThreshold ghế</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 0; font-weight: bold; color: #4a5568;">Nạp dữ liệu mẫu (Enable Seed):</td>
+                <td style="padding: 10px 0;">
+                    <span style="background: @(Model.EnableSeedData ? "#c6f6d5" : "#fed7d7"); color: @(Model.EnableSeedData ? "#22543d" : "#9b2c2c"); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">
+                        @(Model.EnableSeedData ? "Bật" : "Tắt")
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Database Connection State Panel -->
+    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; color: #2d3748; border-bottom: 2px solid #edf2f7; padding-bottom: 10px;">2. Kết nối EF Core Database (SQLite)</h3>
+        <p style="font-size: 0.9em; color: #718096; margin-bottom: 20px;">Trạng thái kết nối và số liệu bản ghi hiện tại trong SQLite.</p>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <div style="flex: 1; text-align: center; padding: 15px; border-radius: 6px; background: @(Model.CanConnectToDb ? "#c6f6d5" : "#fed7d7"); border: 1px solid @(Model.CanConnectToDb ? "#9ae6b4" : "#feb2b2"); color: @(Model.CanConnectToDb ? "#22543d" : "#9b2c2c");">
+                <span style="display: block; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Trạng thái Database</span>
+                <strong style="font-size: 1.25em;">@(Model.CanConnectToDb ? "Đang kết nối" : "Lỗi kết nối")</strong>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.95em;">
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 8px 0; color: #4a5568;">Tổng số Khóa học (Courses):</td>
+                <td style="padding: 8px 0; font-weight: bold;">@Model.TotalCourses</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 8px 0; color: #4a5568;">Tổng số Danh mục (Categories):</td>
+                <td style="padding: 8px 0; font-weight: bold;">@Model.TotalCategories</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 8px 0; color: #4a5568;">Tổng số Học viên (Students):</td>
+                <td style="padding: 8px 0; font-weight: bold;">@Model.TotalStudents</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px 0; color: #4a5568;">Tổng số Lượt đăng ký (Enrollments):</td>
+                <td style="padding: 8px 0; font-weight: bold;">@Model.TotalEnrollments</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top: 30px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+    <h3 style="margin-top: 0; color: #2d3748; border-bottom: 2px solid #edf2f7; padding-bottom: 10px;">3. Phân biệt EF Core Tracking vs AsNoTracking</h3>
+    <p style="font-size: 0.9em; color: #718096; margin-bottom: 20px;">Dưới đây là chẩn đoán tự động về hành vi quản lý trạng thái của EF Core trong Controller.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="background: #f7fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <strong style="color: #2b6cb0; display: block; margin-bottom: 5px;">Truy vấn chỉ đọc danh sách (AsNoTracking):</strong>
+            <span style="font-family: monospace; font-size: 0.95em; color: #2d3748; display: block; margin-bottom: 10px;">
+                _context.Courses.AsNoTracking().ToListAsync()
+            </span>
+            <span style="font-weight: bold;">Kết quả kiểm tra:</span> 
+            <span style="color: green; font-weight: 600;">@Model.ReadOnlyQueryTrackingBehavior</span>
+        </div>
+
+        <div style="background: #f7fafc; padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0;">
+            <strong style="color: #2b6cb0; display: block; margin-bottom: 5px;">Truy vấn cập nhật chỉnh sửa (Tracking mặc định):</strong>
+            <span style="font-family: monospace; font-size: 0.95em; color: #2d3748; display: block; margin-bottom: 10px;">
+                _context.Courses.FirstOrDefaultAsync(c => c.Id == id)
+            </span>
+            <span style="font-weight: bold;">Kết quả kiểm tra:</span> 
+            <span style="color: green; font-weight: 600;">@Model.UpdateQueryTrackingBehavior</span>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 30px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 30px;">
+    <h3 style="margin-top: 0; color: #2d3748; border-bottom: 2px solid #edf2f7; padding-bottom: 10px;">4. Chẩn đoán Rollback Database Transaction</h3>
+    <p style="font-size: 0.9em; color: #718096; margin-bottom: 15px;">
+        Kích hoạt nghiệp vụ ghi nhiều bảng (thêm Student, thêm Enrollment, thêm EnrollmentDetail bị lỗi khóa ngoại để ép exception). 
+        Kiểm tra xem hệ thống có rollback toàn bộ (không thêm học viên ảo) hay không.
+    </p>
+
+    <form method="post" asp-controller="DataHealth" asp-action="VerifyTransactionRollback">
+        <button type="submit" class="btn btn-secondary" style="padding: 10px 20px; font-weight: bold;">
+            Chạy thử nghiệm Transaction & Rollback
+        </button>
+    </form>
+</div>
