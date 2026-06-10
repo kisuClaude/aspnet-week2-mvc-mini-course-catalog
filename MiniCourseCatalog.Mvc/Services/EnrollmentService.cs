@@ -72,31 +72,26 @@ public class EnrollmentService : IEnrollmentService
 
     public async Task CreateEnrollmentTransactionAsync(EnrollmentCreateViewModel model)
     {
-        // 1. Begin Database Transaction
         using var transaction = await _enrollmentRepository.BeginTransactionAsync();
         try
         {
-            // 2. Query student (Read operations)
             var student = await _enrollmentRepository.GetStudentByIdAsync(model.StudentId);
             if (student == null)
             {
                 throw new Exception("Học viên không tồn tại trong hệ thống.");
             }
 
-            // 3. Query course (Tracking mode is used because we'll update AvailableSeats)
             var course = await _courseRepository.GetByIdAsync(model.CourseId);
             if (course == null)
             {
                 throw new Exception("Khóa học không tồn tại.");
             }
 
-            // 4. Validate domain business rules (seat availability)
             if (course.AvailableSeats <= 0)
             {
                 throw new InvalidOperationException($"Khóa học '{course.Title}' đã hết chỗ đăng ký!");
             }
 
-            // 5. Create new Enrollment (Multi-table writes)
             var enrollment = new Enrollment
             {
                 StudentId = model.StudentId,
@@ -106,10 +101,8 @@ public class EnrollmentService : IEnrollmentService
             };
 
             await _enrollmentRepository.AddAsync(enrollment);
-            // Save to generate Enrollment ID
             await _enrollmentRepository.SaveChangesAsync();
 
-            // 6. Create enrollment detail record
             var detail = new EnrollmentDetail
             {
                 EnrollmentId = enrollment.Id,
@@ -117,21 +110,17 @@ public class EnrollmentService : IEnrollmentService
                 PriceApplied = course.TuitionFee
             };
 
-            // 7. Deduct seats from the course
             course.AvailableSeats -= 1;
             course.LastUpdatedAt = DateTime.Now;
 
-            // Save changes (both EnrollmentDetail insert and Course update)
             await _enrollmentRepository.SaveChangesAsync();
 
-            // 8. Commit SQLite database transaction
             await transaction.CommitAsync();
         }
         catch (Exception)
         {
-            // 9. Rollback transaction in case of exceptions
             await transaction.RollbackAsync();
-            throw; // Re-throw to handle in controller
+            throw;
         }
     }
 }

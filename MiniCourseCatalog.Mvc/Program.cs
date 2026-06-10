@@ -6,17 +6,13 @@ using MiniCourseCatalog.Mvc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add MVC services
 builder.Services.AddControllersWithViews();
 
-// Register AppSettings Options pattern
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
-// Register DbContext with SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// DI registrations using appropriate Scoped lifetime
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();

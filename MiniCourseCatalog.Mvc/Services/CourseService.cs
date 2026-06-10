@@ -50,8 +50,6 @@ public class CourseService : ICourseService
             AvailableSeats = course.AvailableSeats,
             WarningThreshold = course.WarningThreshold,
             LastUpdatedAt = course.LastUpdatedAt,
-            CategoryName = course.Category?.Name ?? "Không xác định",
-            // Flag if the course is low on seats (using Option Pattern limit)
             IsSlightlyEmpty = course.AvailableSeats > 0 && course.AvailableSeats <= _settings.LowSeatThreshold
         };
     }
@@ -64,8 +62,6 @@ public class CourseService : ICourseService
             TotalCourses = courses.Count,
             TotalAvailableSeats = courses.Sum(c => c.AvailableSeats),
             TotalExpectedRevenue = courses.Sum(c => c.TuitionFee * c.AvailableSeats),
-            FullCourseCount = courses.Count(c => c.AvailableSeats <= 0),
-            // Use LowSeatThreshold from strongly-typed Options instead of a hardcoded value!
             AlmostFullCount = courses.Count(c => c.AvailableSeats > 0 && c.AvailableSeats <= _settings.LowSeatThreshold)
         };
     }
@@ -84,7 +80,6 @@ public class CourseService : ICourseService
 
     public async Task CreateCourseAsync(CourseCreateViewModel model)
     {
-        // Default category code mapping or default CategoryId
         var course = new Course
         {
             CourseCode = model.CourseCode,
@@ -95,7 +90,7 @@ public class CourseService : ICourseService
             TuitionFee = model.TuitionFee,
             AvailableSeats = model.AvailableSeats,
             WarningThreshold = model.WarningThreshold,
-            CategoryId = model.CategoryId > 0 ? model.CategoryId : 1, // Fallback default category
+            CategoryId = model.CategoryId > 0 ? model.CategoryId : 1,
             LastUpdatedAt = DateTime.Now
         };
 
@@ -115,8 +110,6 @@ public class CourseService : ICourseService
             TuitionFee = course.TuitionFee,
             AvailableSeats = course.AvailableSeats,
             WarningThreshold = course.WarningThreshold,
-            CategoryName = course.Category?.Name ?? "Không xác định",
-            // Apply strongly-typed config for UI highlights
             IsLowSeats = course.AvailableSeats > 0 && course.AvailableSeats <= _settings.LowSeatThreshold
         };
     }

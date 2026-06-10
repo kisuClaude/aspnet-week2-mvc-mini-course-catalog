@@ -25,7 +25,6 @@ public class CourseRepository : ICourseRepository
 
     public Task<List<Course>> GetAllReadOnlyAsync()
     {
-        // Demonstration of AsNoTracking() for read-only listings
         return _context.Courses
             .Include(c => c.Category)
             .AsNoTracking()
@@ -34,7 +33,6 @@ public class CourseRepository : ICourseRepository
 
     public Task<List<Course>> GetFilteredAsync(int? categoryId, decimal? minFee, decimal? maxFee)
     {
-        // Demonstrating relationship query + filter criteria + AsNoTracking()
         var query = _context.Courses
             .Include(c => c.Category)
             .AsNoTracking();
@@ -67,7 +65,6 @@ public class CourseRepository : ICourseRepository
 
     public Task<Course?> GetByIdAsync(int id)
     {
-        // Tracking query so we can modify seats later during enrollment if needed
         return _context.Courses
             .Include(c => c.Category)
             .FirstOrDefaultAsync(c => c.Id == id);
