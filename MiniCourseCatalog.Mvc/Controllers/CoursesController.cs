@@ -16,7 +16,6 @@ public class CoursesController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // Demonstration of standard listing using the Service layer (which calls AsNoTracking Repository queries)
         var courses = await _courseService.GetCourseListAsync();
         return View(courses);
     }
@@ -58,7 +57,6 @@ public class CoursesController : Controller
         return View(viewModel);
     }
 
-    // Feature 2 — Filter courses by category and price range using relationship and AsNoTracking
     [HttpGet]
     public async Task<IActionResult> Filter(int? categoryId, decimal? minPrice, decimal? maxPrice)
     {

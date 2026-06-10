@@ -41,9 +41,6 @@ public class DataHealthController : Controller
                 model.TotalCategories = await _context.CourseCategories.CountAsync();
                 model.TotalStudents = await _context.Students.CountAsync();
                 model.TotalEnrollments = await _context.Enrollments.CountAsync();
-
-                // 1. Diagnose AsNoTracking Read-Only behaviors
-                // When queried with AsNoTracking, the entities are not tracked by DbContext ChangeTracker.
                 var tempCourseNoTracking = await _context.Courses.AsNoTracking().FirstOrDefaultAsync();
                 if (tempCourseNoTracking != null)
                 {
@@ -52,8 +49,6 @@ public class DataHealthController : Controller
                         ? "Tracking (Not Expected for AsNoTracking)" 
                         : "AsNoTracking (Success: Entity is Detached)";
                 }
-
-                // 2. Diagnose Tracking Update behaviors
                 var tempCourseTracking = await _context.Courses.FirstOrDefaultAsync();
                 if (tempCourseTracking != null)
                 {
@@ -73,19 +68,16 @@ public class DataHealthController : Controller
         return View(model);
     }
 
-    // Trigger dynamic diagnostic transaction rollback verification check
     [HttpPost]
     public async Task<IActionResult> VerifyTransactionRollback()
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            // Create a fake test student
             var testStudent = new Student { FullName = "Test Rollback Student", Email = "rollback@test.com" };
             _context.Students.Add(testStudent);
             await _context.SaveChangesAsync();
 
-            // Create a fake enrollment
             var enrollment = new Enrollment
             {
                 StudentId = testStudent.Id,
@@ -96,15 +88,14 @@ public class DataHealthController : Controller
             _context.Enrollments.Add(enrollment);
             await _context.SaveChangesAsync();
 
-            // Intentionally force an error by registering with an invalid course ID
             var invalidDetail = new EnrollmentDetail
             {
                 EnrollmentId = enrollment.Id,
-                CourseId = -999, // Force DbUpdateException / ForeignKey constraint check failure
+                CourseId = -999,
                 PriceApplied = 1000000
             };
             _context.EnrollmentDetails.Add(invalidDetail);
-            await _context.SaveChangesAsync(); // Should throw and trigger catch
+            await _context.SaveChangesAsync();
 
             await transaction.CommitAsync();
             TempData["TransactionTestMessage"] = "Test failed: Enrollment saved despite constraint violations (No rollback occurred).";
