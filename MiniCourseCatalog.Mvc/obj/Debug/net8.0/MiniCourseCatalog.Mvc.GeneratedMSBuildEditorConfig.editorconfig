@@ -18,12 +18,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\MiniCourse\MiniCourseCatalog.Mvc
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/MiniCourse/MiniCourseCatalog.Mvc/Views/CourseCategories/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Courses/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Courses/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Courses/Filter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xGaWx0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Courses/Index.cshtml]
@@ -36,6 +44,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Courses/Stats.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xTdGF0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MiniCourse/MiniCourseCatalog.Mvc/Views/DataHealth/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGF0YUhlYWx0aFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Enrollments/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW5yb2xsbWVudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Enrollments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW5yb2xsbWVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MiniCourse/MiniCourseCatalog.Mvc/Views/Home/Index.cshtml]

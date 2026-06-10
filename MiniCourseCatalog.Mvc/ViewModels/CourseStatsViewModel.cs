@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MiniCourseCatalog.Mvc.ViewModels;
 
 public class CourseStatsViewModel
@@ -8,5 +10,5 @@ public class CourseStatsViewModel
     public int FullCourseCount { get; set; }
     public int AlmostFullCount { get; set; }
 
-    public string TotalExpectedRevenueText => $"{TotalExpectedRevenue:N0} VND";
+    public string TotalExpectedRevenueText => TotalExpectedRevenue.ToString("C0", new CultureInfo("vi-VN"));
 }

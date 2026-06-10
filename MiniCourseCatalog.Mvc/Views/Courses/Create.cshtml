@@ -11,9 +11,36 @@
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="form-group">
+            <label asp-for="CourseCode">Mã khóa học (Ví dụ: IT-001)</label>
+            <input asp-for="CourseCode" class="form-control" />
+            <span asp-validation-for="CourseCode" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CourseSku">SKU khóa học (Ví dụ: SKU-IT-NEW)</label>
+            <input asp-for="CourseSku" class="form-control" />
+            <span asp-validation-for="CourseSku" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <label asp-for="Title">Tên khóa học</label>
             <input asp-for="Title" class="form-control" />
             <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CategoryId">Danh mục khóa học</label>
+            <select asp-for="CategoryId" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #cbd5e0;">
+                <option value="">-- Chọn danh mục --</option>
+                @if (ViewBag.Categories != null)
+                {
+                    foreach (var cat in ViewBag.Categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
 
         <div class="form-group">

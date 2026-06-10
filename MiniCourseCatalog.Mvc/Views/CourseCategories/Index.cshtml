@@ -1,0 +1,47 @@
+@model List<MiniCourseCatalog.Mvc.ViewModels.CourseCategoryViewModel>
+@{
+    ViewData["Title"] = "Danh mục khóa học";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Danh mục Khóa học</h2>
+        <p class="page-description">Báo cáo quan hệ One-to-Many giữa Danh mục và Khóa học.</p>
+    </div>
+</div>
+
+<div class="info-box">
+    <strong>Tổng số danh mục:</strong> @Model.Count
+</div>
+
+<div class="table-responsive" style="margin-top: 20px;">
+    <table class="table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #1a202c; color: white; text-align: left;">
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Mã danh mục</th>
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6;">Tên danh mục</th>
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6; text-align: center;">Số lượng khóa học thuộc nhóm</th>
+                <th style="padding: 12px; border-bottom: 2px solid #dee2e6; text-align: center;">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border-bottom: 1px solid #dee2e6;">
+                    <td style="padding: 12px; font-weight: bold; color: #4a5568;">@item.Code</td>
+                    <td style="padding: 12px; font-weight: 600;">@item.Name</td>
+                    <td style="padding: 12px; text-align: center; font-weight: bold; color: #3182ce;">
+                        <span class="badge" style="background-color: #ebf8ff; color: #2b6cb0; padding: 6px 12px; border-radius: 12px;">
+                            @item.CourseCount khóa học
+                        </span>
+                    </td>
+                    <td style="padding: 12px; text-align: center;">
+                        <a class="btn btn-light" asp-controller="Courses" asp-action="Filter" asp-route-categoryId="@item.Id" style="font-size: 0.85em; padding: 4px 8px;">
+                            Xem danh sách khóa học
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

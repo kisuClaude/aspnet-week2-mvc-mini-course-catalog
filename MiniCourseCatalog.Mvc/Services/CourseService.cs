@@ -1,70 +1,123 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using MiniCourseCatalog.Mvc.Models;
+using MiniCourseCatalog.Mvc.Options;
+using MiniCourseCatalog.Mvc.Repositories;
 using MiniCourseCatalog.Mvc.ViewModels;
 
 namespace MiniCourseCatalog.Mvc.Services;
 
-public class CourseService
+public class CourseService : ICourseService
 {
-    private readonly List<Course> _courses = new()
+    private readonly ICourseRepository _courseRepository;
+    private readonly AppSettings _settings;
+
+    public CourseService(ICourseRepository courseRepository, IOptions<AppSettings> options)
     {
-        new Course { Id = 1, CourseCode = "MTH00001", Title = "Cơ sở lập trình", Department = "Toán-Tin", Instructor = "Nguyễn Hiền Lương", TuitionFee = 1500000, AvailableSeats = 50, WarningThreshold = 10, LastUpdatedAt = DateTime.Now },
-        new Course { Id = 2, CourseCode = "MTH00002", Title = "Cấu trúc dữ liệu và giải thuật", Department = "Toán-Tin", Instructor = "Hà Văn Thảo", TuitionFee = 1800000, AvailableSeats = 5, WarningThreshold = 10, LastUpdatedAt = DateTime.Now },
-        new Course { Id = 3, CourseCode = "MTH00003", Title = "Lập trình hướng đối tượng", Department = "Toán-Tin", Instructor = "Hà Văn Thảo", TuitionFee = 2000000, AvailableSeats = 0, WarningThreshold = 5, LastUpdatedAt = DateTime.Now },
-        new Course { Id = 4, CourseCode = "MTH00004", Title = "Lập trình web", Department = "Toán-Tin", Instructor = "Hà Văn Thảo", TuitionFee = 1600000, AvailableSeats = 20, WarningThreshold = 5, LastUpdatedAt = DateTime.Now }
-    };
+        _courseRepository = courseRepository;
+        _settings = options.Value;
+    }
 
-    public List<Course> GetAll() => _courses;
-
-    public Course? GetById(int id) => _courses.FirstOrDefault(c => c.Id == id);
-
-    public CourseStatsViewModel GetStats()
+    public async Task<List<CourseListItemViewModel>> GetCourseListAsync()
     {
-        return new CourseStatsViewModel
+        var courses = await _courseRepository.GetAllReadOnlyAsync();
+        return courses.Select(MapToListItem).ToList();
+    }
+
+    public async Task<List<CourseListItemViewModel>> GetFilteredCoursesAsync(int? categoryId, decimal? minFee, decimal? maxFee)
+    {
+        var courses = await _courseRepository.GetFilteredAsync(categoryId, minFee, maxFee);
+        return courses.Select(MapToListItem).ToList();
+    }
+
+    public async Task<CourseDetailViewModel?> GetCourseDetailAsync(int id)
+    {
+        var course = await _courseRepository.GetByIdAsync(id);
+        if (course == null) return null;
+
+        return new CourseDetailViewModel
         {
-            TotalCourses = _courses.Count,
-            TotalAvailableSeats = _courses.Sum(c => c.AvailableSeats),
-            TotalExpectedRevenue = _courses.Sum(c => c.TuitionFee * c.AvailableSeats),
-            FullCourseCount = _courses.Count(c => c.AvailableSeats <= 0),
-            AlmostFullCount = _courses.Count(c => c.AvailableSeats > 0 && c.AvailableSeats <= c.WarningThreshold)
+            Id = course.Id,
+            CourseCode = course.CourseCode,
+            CourseSku = course.CourseSku,
+            Title = course.Title,
+            Department = course.Department,
+            Instructor = course.Instructor,
+            TuitionFee = course.TuitionFee,
+            AvailableSeats = course.AvailableSeats,
+            WarningThreshold = course.WarningThreshold,
+            LastUpdatedAt = course.LastUpdatedAt,
+            CategoryName = course.Category?.Name ?? "Không xác định",
+            // Flag if the course is low on seats (using Option Pattern limit)
+            IsSlightlyEmpty = course.AvailableSeats > 0 && course.AvailableSeats <= _settings.LowSeatThreshold
         };
     }
 
-    public List<Course> Search(string? keyword, decimal? minFee)
+    public async Task<CourseStatsViewModel> GetStatsAsync()
     {
-        var query = _courses.AsEnumerable();
-
-        if (!string.IsNullOrWhiteSpace(keyword))
+        var courses = await _courseRepository.GetAllReadOnlyAsync();
+        return new CourseStatsViewModel
         {
-            query = query.Where(c => 
-                c.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                c.CourseCode.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                c.Department.Contains(keyword, StringComparison.OrdinalIgnoreCase));
-        }
-
-        if (minFee.HasValue)
-        {
-            query = query.Where(c => c.TuitionFee >= minFee.Value);
-        }
-
-        return query.ToList();
+            TotalCourses = courses.Count,
+            TotalAvailableSeats = courses.Sum(c => c.AvailableSeats),
+            TotalExpectedRevenue = courses.Sum(c => c.TuitionFee * c.AvailableSeats),
+            FullCourseCount = courses.Count(c => c.AvailableSeats <= 0),
+            // Use LowSeatThreshold from strongly-typed Options instead of a hardcoded value!
+            AlmostFullCount = courses.Count(c => c.AvailableSeats > 0 && c.AvailableSeats <= _settings.LowSeatThreshold)
+        };
     }
 
-    public Course Create(CourseCreateViewModel model)
+    public async Task<List<CourseCategoryViewModel>> GetCategoriesWithCountsAsync()
     {
-        var newId = _courses.Count == 0 ? 1 : _courses.Max(c => c.Id) + 1;
+        var categories = await _courseRepository.GetCategoriesWithCoursesAsync();
+        return categories.Select(c => new CourseCategoryViewModel
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Code = c.Code,
+            CourseCount = c.Courses.Count
+        }).ToList();
+    }
+
+    public async Task CreateCourseAsync(CourseCreateViewModel model)
+    {
+        // Default category code mapping or default CategoryId
         var course = new Course
         {
-            Id = newId,
-            CourseCode = $"NEW-{newId:D3}", 
+            CourseCode = model.CourseCode,
+            CourseSku = model.CourseSku,
             Title = model.Title,
             Department = model.Department,
             Instructor = model.Instructor,
             TuitionFee = model.TuitionFee,
             AvailableSeats = model.AvailableSeats,
             WarningThreshold = model.WarningThreshold,
+            CategoryId = model.CategoryId > 0 ? model.CategoryId : 1, // Fallback default category
             LastUpdatedAt = DateTime.Now
         };
-        _courses.Add(course);
-        return course;
+
+        await _courseRepository.AddAsync(course);
+        await _courseRepository.SaveChangesAsync();
+    }
+
+    private CourseListItemViewModel MapToListItem(Course course)
+    {
+        return new CourseListItemViewModel
+        {
+            Id = course.Id,
+            CourseCode = course.CourseCode,
+            CourseSku = course.CourseSku,
+            Title = course.Title,
+            Department = course.Department,
+            TuitionFee = course.TuitionFee,
+            AvailableSeats = course.AvailableSeats,
+            WarningThreshold = course.WarningThreshold,
+            CategoryName = course.Category?.Name ?? "Không xác định",
+            // Apply strongly-typed config for UI highlights
+            IsLowSeats = course.AvailableSeats > 0 && course.AvailableSeats <= _settings.LowSeatThreshold
+        };
     }
 }
